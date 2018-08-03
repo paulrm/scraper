@@ -16,9 +16,32 @@ foreach($dom->getElementsByTagName('ul') as $link) {
            #print_r($link);
            foreach($link->childNodes as $li)
                  {
-                 echo $li->textContent . "\n";
+                 #echo "---->" . $li->textContent . "<---\n";
+                 $linea=trim($li->textContent);
+                 if(strlen($linea)>0)
+                    processLine($linea);
                  }
-           echo "\n";
+           #echo "\n";
            }
 }
+
+function processLine($linea) {
+   $parts=array();
+   $n=preg_match_all( '/\$/', $linea, $parts );
+   if($n==1)
+      {
+      $precio="";  
+      $words=explode(" ",$linea);
+      #print_r($words);
+      foreach($words as $word) 
+          {
+          if(substr($word,0,1)=='$')
+              $precio=$word;
+          }
+      echo '"' . $linea . '", "' . $precio . '"' . "\n";
+      }
+   else
+      echo '"' . $linea . '", "' . "" . '"' . "\n";
+}
+
 ?>
